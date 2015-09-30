@@ -17,4 +17,5 @@ class VonawebItem(scrapy.Item):
     images = scrapy.Field()
     pack = scrapy.Field()
     index = scrapy.Field()
+    brand = scrapy.Field()
 

@@ -44,9 +44,10 @@ class VonaSpider(scrapy.Spider):
         name = sel.xpath('//h1[contains(@itemprop,"name")]//text()').extract()
         catalog = sel.xpath('//a[contains(@id,"Tab_catalog")]/text()').extract()
         image_url = sel.xpath('//img[contains(@itemprop,"image")]/@src').extract()
+        brand = sel.xpath('//div[contains(@class,"brand")]/span/a[contains(@itemprop,"brand")]/span[contains(@itemprop,"name")]/text()').extract()
         index = response.meta['index']
         item = VonawebItem(index=index,pack=False)
-        pattern = re.compile(ur'.*\u3010.*\u3011')
+        pattern = re.compile(ur'.*\u3010.*Pieces Per Package.*\u3011')
         if name:
             item['name']=u''
             for each in name:
@@ -63,4 +64,6 @@ class VonaSpider(scrapy.Spider):
             item['pack']=False
         if image_url:
             item['image_urls']=['http://th.stg.misumi-ec.com'+image_url[0]]
+        if brand:
+            item['brand']=brand[0].encode('utf-8')
         return item
