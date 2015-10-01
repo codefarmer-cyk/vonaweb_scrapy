@@ -15,7 +15,7 @@ SPIDER_MODULES = ['vonaweb.spiders']
 NEWSPIDER_MODULE = 'vonaweb.spiders'
 
 ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
-IMAGES_STORE = '../images'
+IMAGES_STORE = 'images'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

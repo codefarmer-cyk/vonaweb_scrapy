@@ -16,7 +16,7 @@ class VonaSpider(scrapy.Spider):
     start_urls = []
 
     def __init__(self):
-        data = xlrd.open_workbook('/home/chenyikui/Desktop/work/测试.xls')
+        data = xlrd.open_workbook('/home/chenyikui/Desktop/vonaweb/vonaweb/file/2000-2199逸逵.xls')
         table = data.sheets()[0]
         for url in table.col_values(3)[2:]:
             self.start_urls.append(url)
@@ -37,9 +37,6 @@ class VonaSpider(scrapy.Spider):
 
 
     def parse_item(self,response):
-        #selector = Selector(response)
-        #for ele in selector.xpath('//h1[contains(@itemprop,"name")]/text()').extract():
-
         sel = Selector(response)
         name = sel.xpath('//h1[contains(@itemprop,"name")]//text()').extract()
         catalog = sel.xpath('//a[contains(@id,"Tab_catalog")]/text()').extract()
