@@ -45,15 +45,6 @@ if __name__ == '__main__':
 
     for each in jsonData:
         row=each['index']+2
-#        if each['images']:
-#            if os.path.exists(os.path.join(prefix,each['images'][0]['path'])):
-#                try:
-#                    os.rename(os.path.join(prefix,each['images'][0]['path']),os.path.join(prefix,'full/'+each['name']+'.jpg'))
-#                except OSError,e:
-#                    print e
-#                    print each['name']
-#                    os.rename(os.path.join(prefix,each['images'][0]['path']),os.path.join(prefix,'full/'+each['name'].split('/')[0]+'.jpg'))
-#
         setOutCell(s,row,5,each['name'].decode('utf-8'))
         if each['catalog'] !=u'Catalog':
             setOutCell(s,row,9,u'无电子书'.decode('utf-8'))

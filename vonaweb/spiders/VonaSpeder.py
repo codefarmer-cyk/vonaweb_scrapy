@@ -17,13 +17,9 @@ class VonaSpider(scrapy.Spider):
     start_urls = []
 
     def __init__(self):
-<<<<<<< HEAD
         prefix = os.getcwd()
         print prefix
         data = xlrd.open_workbook(prefix+os.path.sep+'file'+os.path.sep+u'2200-2399逸逵.xls')
-=======
-        data = xlrd.open_workbook('/home/chenyikui/Desktop/vonaweb/vonaweb/file/2000-2199逸逵.xls')
->>>>>>> 5ef00470d5dabd520d949a99ba1de88745e88261
         table = data.sheets()[0]
         for url in table.col_values(3)[2:]:
             self.start_urls.append(url)
