@@ -2,7 +2,12 @@
 import os
 import xlrd
 import json
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 from xlutils.copy import copy
+import xlrd
+import re
 
 def _getOutCell(outSheet, colIndex, rowIndex): 
     """ HACK: Extract the internal xlwt cell representation. """ 
@@ -26,35 +31,86 @@ def setOutCell(outSheet, row, col, value):
 
 if __name__ == '__main__':
     print 'start'
-    prefix='/home/chenyikui/Desktop/vonaweb/images/'
-    jsonFile = open('/home/chenyikui/Desktop/vonaweb/vonaweb/vona.json')
+#    print os.getcwd()
+    prefix=os.getcwd()+os.path.sep+'images'
+    jsonFile = open('./vona.json')
     src = jsonFile.read()
     jsonData=json.loads(src)
     jsonData.sort(key=lambda obj:obj.get('index'))
     jsonFile.close()
-    result = xlrd.open_workbook('/home/chenyikui/Desktop/work/测试.xls',formatting_info=True)
+    result = xlrd.open_workbook('./file/2200-2399逸逵.xls',formatting_info=True)
     wb=copy(result)
     s = wb.get_sheet(0)
-    #wb = result.sheets()[0]
 
-    row=2
     for each in jsonData:
-        if os.path.exists(os.path.join(prefix,each['images'][0]['path'])):
-            os.rename(os.path.join(prefix,each['images'][0]['path']),os.path.join(prefix,'full/'+each['name']+'.jpg'))
-
-        #s.write(row,5,each['name'])
-        setOutCell(s,row,5,each['name'])
+        row=each['index']+2
+#        if each['images']:
+#            if os.path.exists(os.path.join(prefix,each['images'][0]['path'])):
+#                try:
+#                    os.rename(os.path.join(prefix,each['images'][0]['path']),os.path.join(prefix,'full/'+each['name']+'.jpg'))
+#                except OSError,e:
+#                    print e
+#                    print each['name']
+#                    os.rename(os.path.join(prefix,each['images'][0]['path']),os.path.join(prefix,'full/'+each['name'].split('/')[0]+'.jpg'))
+#
+        setOutCell(s,row,5,each['name'].decode('utf-8'))
         if each['catalog'] !=u'Catalog':
-            setOutCell(s,row,9,u'无电子书')
+            setOutCell(s,row,9,u'无电子书'.decode('utf-8'))
         else:
-            setOutCell(s,row,9,u'有且正常显示')
-         #   s.write(row,9,u'无电子书')
+            setOutCell(s,row,9,u'有且正常显示'.decode('utf-8'))
         if each['pack']:
-            setOutCell(s,row,10,u'セット商品-按套出售')
-         #   s.write(row,10,u'セット商品-按套出售')
+            setOutCell(s,row,10,u'セット商品-按套出售'.decode('utf-8'))
         else:
-         setOutCell(s,row,10,u'セット商品外-单个出售')
-         #   s.write(row,10,u'セット商品外-单个出售')
-        row+=1
-    wb.save('/home/chenyikui/Desktop/work/test.xls')
+            setOutCell(s,row,10,u'セット商品外-单个出售'.decode('utf-8'))
+        if each['images'] and each['images'][0].get('path'):
+            pass
+        else:
+            setOutCell(s,row,8,'×-无图片'.decode('utf-8'))
+
+    wb.save('./file/result.xls')
+
+    data = xlrd.open_workbook(os.getcwd()+os.path.sep+'file'+os.path.sep+'生产商名录.xls')
+    table = data.sheets()[0]
+    brand_site={}
+    brand = table.col_values(2)[2:]
+    site = table.col_values(4)[2:]
+    for index,each in enumerate(brand):
+        if site[index] and site[index]!='':
+            s = site[index].split('/')
+            try:
+                brand_site[each]=s[2]
+            except Exception,e:
+                print e
+                print site[index]
+#    print brand_site
+
+
+    htmlFile = open('./file/items.html','w')
+    htmlFile.write('<!Document><html><head><meta charset="utf-8"><title>vona web items</title></head></body>\r\n<ul>')
+    for each in jsonData:
+        htmlFile.write(str(each['index']+1)+'<li><div style="border:1px dashed #000"><ul>\r\n')
+        htmlFile.write('<li>'+each['name']+'</li>\r\n')
+        if each['images']:
+            path=os.getcwd()+os.path.sep+'images'+os.path.sep+each['images'][0]['path']
+        htmlFile.write('<li><img src="'+path+'"/></li>\r\n')
+        pattern = re.compile(r'.*'+each['brand']+'.*')     
+        s = None
+        for e in brand:
+            match = pattern.match(e)
+            if match:
+                s = brand_site[e]
+                break
+        if s:
+#            print each['brand'],e
+            patten = re.compile(r'^www\..*')
+            match = patten.match(s)
+            if match:
+                s=s[4:]
+            htmlFile.write(u'<li><a href="https://search.yahoo.com/search;_ylt=Ak_vFvmZFT62LZ2EMk24mhabvZx4?p='+each['name']+'+site%3A'+s+'&toggle=1&cop=mss&ei=UTF-8&fr=yfp-t-901&fp=1" target="_blan">官方</a></li>\r\n'.decode('utf-8'))
+
+        htmlFile.write(u'<li><a href="https://search.yahoo.com/search;_ylt=AwrBT8OB9gxWQ3IAWMyl87UF;_ylc=X1MDOTU4MTA0NjkEX3IDMgRmcgMEZ3ByaWQDbFBTeGh6WkpUQmVZcm9WdDJ3MHZ3QQRuX3JzbHQDMARuX3N1Z2cDMTAEb3JpZ2luA3NlYXJjaC55YWhvby5jb20EcG9zAzAEcHFzdHIDBHBxc3RybAMEcXN0cmwDNARxdWVyeQNmdWNrBHRfc3RtcAMxNDQzNjkwMTUy?p='+each['name']+'&fr=sfp&fr2=sb-top-search&iscqry=" target="_black" >非官方</a></li>\r\n'.decode('utf-8'))
+        htmlFile.write('</ul></div></li>\r\n')
+    htmlFile.write('</ul>\r\n</body></html>')
+    htmlFile.close()
+
     print 'finished'

@@ -9,6 +9,7 @@ from scrapy.contrib.spiders import Rule
 from scrapy.selector import Selector
 from vonaweb.items import VonawebItem
 import re
+import os
 
 class VonaSpider(scrapy.Spider):
     name = 'vona'
@@ -16,7 +17,9 @@ class VonaSpider(scrapy.Spider):
     start_urls = []
 
     def __init__(self):
-        data = xlrd.open_workbook('/home/chenyikui/Desktop/work/测试.xls')
+        prefix = os.getcwd()
+        print prefix
+        data = xlrd.open_workbook(prefix+os.path.sep+'file'+os.path.sep+u'2200-2399逸逵.xls')
         table = data.sheets()[0]
         for url in table.col_values(3)[2:]:
             self.start_urls.append(url)
@@ -37,9 +40,6 @@ class VonaSpider(scrapy.Spider):
 
 
     def parse_item(self,response):
-        #selector = Selector(response)
-        #for ele in selector.xpath('//h1[contains(@itemprop,"name")]/text()').extract():
-
         sel = Selector(response)
         name = sel.xpath('//h1[contains(@itemprop,"name")]//text()').extract()
         catalog = sel.xpath('//a[contains(@id,"Tab_catalog")]/text()').extract()
