@@ -33,6 +33,7 @@ if __name__ == '__main__':
     print 'start'
 #    print os.getcwd()
     prefix=os.getcwd()+os.path.sep+'images'
+    prefix='/home/chenyikui/Desktop/vonaweb/vonaweb/images'
     jsonFile = open('./vona.json')
     src = jsonFile.read()
     jsonData=json.loads(src)
@@ -101,7 +102,7 @@ if __name__ == '__main__':
                 s = brand_site[e]
                 break
         if s:
-#            print each['brand'],e
+            #            print each['brand'],e
             patten = re.compile(r'^www\..*')
             match = patten.match(s)
             if match:
