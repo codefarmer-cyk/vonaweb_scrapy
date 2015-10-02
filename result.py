@@ -33,13 +33,12 @@ if __name__ == '__main__':
     print 'start'
 #    print os.getcwd()
     prefix=os.getcwd()+os.path.sep+'images'
-    prefix='/home/chenyikui/Desktop/vonaweb/vonaweb/images'
     jsonFile = open('./vona.json')
     src = jsonFile.read()
     jsonData=json.loads(src)
     jsonData.sort(key=lambda obj:obj.get('index'))
     jsonFile.close()
-    result = xlrd.open_workbook('./file/2200-2399逸逵.xls',formatting_info=True)
+    result = xlrd.open_workbook(u'./file/2400-2799逸逵.xls',formatting_info=True)
     wb=copy(result)
     s = wb.get_sheet(0)
 
@@ -61,7 +60,7 @@ if __name__ == '__main__':
 
     wb.save('./file/result.xls')
 
-    data = xlrd.open_workbook(os.getcwd()+os.path.sep+'file'+os.path.sep+'生产商名录.xls')
+    data = xlrd.open_workbook(os.getcwd()+os.path.sep+'file'+os.path.sep+u'2400-2799逸逵.xls')
     table = data.sheets()[0]
     brand_site={}
     brand = table.col_values(2)[2:]
