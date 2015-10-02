@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     wb.save('./file/result.xls')
 
-    data = xlrd.open_workbook(os.getcwd()+os.path.sep+'file'+os.path.sep+u'2400-2799逸逵.xls')
+    data = xlrd.open_workbook(os.getcwd()+os.path.sep+'file'+os.path.sep+u'生产商名录.xls')
     table = data.sheets()[0]
     brand_site={}
     brand = table.col_values(2)[2:]
@@ -84,10 +84,10 @@ if __name__ == '__main__':
         if each['images']:
             path=os.getcwd()+os.path.sep+'images'+os.path.sep+each['images'][0]['path']
         htmlFile.write('<li><img src="'+path+'"/></li>\r\n')
-        pattern = re.compile(r'.*'+each['brand']+'.*')     
+        pattern = re.compile(each['brand'])     
         s = None
         for e in brand:
-            match = pattern.match(e)
+            match = pattern.search(e)
             if match:
                 s = brand_site[e]
                 break
