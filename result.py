@@ -38,7 +38,7 @@ if __name__ == '__main__':
     jsonData=json.loads(src)
     jsonData.sort(key=lambda obj:obj.get('index'))
     jsonFile.close()
-    result = xlrd.open_workbook(u'./file/2400-2799逸逵.xls',formatting_info=True)
+    result = xlrd.open_workbook(u'./file/2900-2999逸逵.xls',formatting_info=True)
     wb=copy(result)
     s = wb.get_sheet(0)
 
@@ -84,16 +84,16 @@ if __name__ == '__main__':
         if each['images']:
             path=os.getcwd()+os.path.sep+'images'+os.path.sep+each['images'][0]['path']
         htmlFile.write('<li><img src="'+path+'"/></li>\r\n')
-        pattern = re.compile(each['brand'])     
+        pattern = re.compile('.*'+each['brand']+'.*',re.I)     
         s = None
         for e in brand:
             match = pattern.search(e)
             if match:
-                s = brand_site[e]
+                s = brand_site.get(e)
                 break
         if s:
             #            print each['brand'],e
-            patten = re.compile(r'^www\..*')
+            patten = re.compile('^www\..*',re.I)
             match = patten.match(s)
             if match:
                 s=s[4:]
