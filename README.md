@@ -18,10 +18,15 @@ windows环境下：
 4.安装PIL（如果装不上这个就转linux平台吧）,http://effbot.org/downloads/PIL-1.1.7.win32-py2.7.exe
 
 5.以管理员权限运行命令行窗口,输入：
+
 	pip install scrapy
+
 	pip install xlrd
+
 	pip install xlwt
+
 	pip install xlutils
+
 
 6.安装git
 
