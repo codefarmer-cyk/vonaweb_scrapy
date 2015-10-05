@@ -38,7 +38,7 @@ if __name__ == '__main__':
     jsonData=json.loads(src)
     jsonData.sort(key=lambda obj:obj.get('index'))
     jsonFile.close()
-    result = xlrd.open_workbook(u'./file/2900-2999逸逵.xls',formatting_info=True)
+    result = xlrd.open_workbook(u'./file/30300-30999.xls',formatting_info=True)
     wb=copy(result)
     s = wb.get_sheet(0)
 
