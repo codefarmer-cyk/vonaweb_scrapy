@@ -38,7 +38,7 @@ if __name__ == '__main__':
     jsonData=json.loads(src)
     jsonData.sort(key=lambda obj:obj.get('index'))
     jsonFile.close()
-    result = xlrd.open_workbook(u'./file/30300-30999.xls',formatting_info=True)
+    result = xlrd.open_workbook(u'./file/28400-28599.xls',formatting_info=True)
     wb=copy(result)
     s = wb.get_sheet(0)
 
@@ -82,7 +82,8 @@ if __name__ == '__main__':
         htmlFile.write(str(each['index']+1)+'<li><div style="border:1px dashed #000"><ul>\r\n')
         htmlFile.write('<li>'+each['name']+'</li>\r\n')
         if each['images']:
-            path=os.getcwd()+os.path.sep+'images'+os.path.sep+each['images'][0]['path']
+#            path=os.getcwd()+os.path.sep+'images'+os.path.sep+each['images'][0]['path']
+             path = '../images'+os.path.sep+os.path.sep+each['images'][0]['path']
         htmlFile.write('<li><img src="'+path+'"/></li>\r\n')
         pattern = re.compile('.*'+each['brand']+'.*',re.I)     
         s = None
