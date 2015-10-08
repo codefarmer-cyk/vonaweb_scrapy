@@ -14,7 +14,7 @@ BOT_NAME = 'vonaweb'
 SPIDER_MODULES = ['vonaweb.spiders']
 NEWSPIDER_MODULE = 'vonaweb.spiders'
 
-ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
+ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1,'vonaweb.pipelines.MyItemPiple':100}
 IMAGES_STORE = 'images'
 
 

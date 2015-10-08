@@ -38,7 +38,7 @@ if __name__ == '__main__':
     jsonData=json.loads(src)
     jsonData.sort(key=lambda obj:obj.get('index'))
     jsonFile.close()
-    result = xlrd.open_workbook(u'./file/28400-28599.xls',formatting_info=True)
+    result = xlrd.open_workbook(u'./file/28800-28999逸逵.xls',formatting_info=True)
     wb=copy(result)
     s = wb.get_sheet(0)
 
@@ -47,8 +47,10 @@ if __name__ == '__main__':
         setOutCell(s,row,5,each['name'].decode('utf-8'))
         if each['catalog'] !=u'Catalog':
             setOutCell(s,row,9,u'无电子书'.decode('utf-8'))
-        else:
-            setOutCell(s,row,9,u'有且正常显示'.decode('utf-8'))
+#        elif each['catalog_url']:
+#            setOutCell(s,row,9,u'有且正常显示'.decode('utf-8'))
+#    	else :
+#            setOutCell(s,row,9,u'有按钮但显示不出'.decode('utf-8'))
         if each['pack']:
             setOutCell(s,row,10,u'セット商品-按套出售'.decode('utf-8'))
         else:
@@ -85,7 +87,8 @@ if __name__ == '__main__':
 #            path=os.getcwd()+os.path.sep+'images'+os.path.sep+each['images'][0]['path']
              path = '../images'+os.path.sep+os.path.sep+each['images'][0]['path']
         htmlFile.write('<li><img src="'+path+'"/></li>\r\n')
-        pattern = re.compile('.*'+each['brand']+'.*',re.I)     
+        temp = each['brand'].split('(')
+        pattern = re.compile('.*'+temp[0],re.I)     
         s = None
         for e in brand:
             match = pattern.search(e)
@@ -99,6 +102,8 @@ if __name__ == '__main__':
             if match:
                 s=s[4:]
             htmlFile.write(u'<li><a href="https://search.yahoo.com/search;_ylt=Ak_vFvmZFT62LZ2EMk24mhabvZx4?p='+each['name']+'+site%3A'+s+'&toggle=1&cop=mss&ei=UTF-8&fr=yfp-t-901&fp=1" target="_blan">官方</a></li>\r\n'.decode('utf-8'))
+        else :
+            print temp 
 
         htmlFile.write(u'<li><a href="https://search.yahoo.com/search;_ylt=AwrBT8OB9gxWQ3IAWMyl87UF;_ylc=X1MDOTU4MTA0NjkEX3IDMgRmcgMEZ3ByaWQDbFBTeGh6WkpUQmVZcm9WdDJ3MHZ3QQRuX3JzbHQDMARuX3N1Z2cDMTAEb3JpZ2luA3NlYXJjaC55YWhvby5jb20EcG9zAzAEcHFzdHIDBHBxc3RybAMEcXN0cmwDNARxdWVyeQNmdWNrBHRfc3RtcAMxNDQzNjkwMTUy?p='+each['name']+'&fr=sfp&fr2=sb-top-search&iscqry=" target="_black" >非官方</a></li>\r\n'.decode('utf-8'))
         htmlFile.write('</ul></div></li>\r\n')

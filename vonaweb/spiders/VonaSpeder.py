@@ -19,11 +19,10 @@ class VonaSpider(scrapy.Spider):
     def __init__(self):
         prefix = os.getcwd()
         print prefix
-        data = xlrd.open_workbook(prefix+os.path.sep+'file'+os.path.sep+u'28400-28599.xls')
+        data = xlrd.open_workbook(prefix+os.path.sep+'file'+os.path.sep+u'28800-28999逸逵.xls')
         table = data.sheets()[0]
         for url in table.col_values(3)[2:]:
             self.start_urls.append(url)
-        print url
 
     def start_requests(self):
         for i,url in enumerate(self.start_urls):
@@ -66,4 +65,5 @@ class VonaSpider(scrapy.Spider):
             item['image_urls']=['http://th.stg.misumi-ec.com'+image_url[0]]
         if brand:
             item['brand']=brand[0].encode('utf-8')
+
         return item
